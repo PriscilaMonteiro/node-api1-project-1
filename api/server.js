@@ -13,9 +13,7 @@ server.use(express.json())
 
 
 //FOURTH STEP: ENDPOINTS
-
-
-// | GET    | /api/users/:id | Returns the user object with the specified `id`.                                                       |
+                                                    |
 // | DELETE | /api/users/:id | Removes the user with the specified `id` and returns the deleted user.                                 |
 // | PUT    | /api/users/:id | Updates the user with the specified `id` using data from the `request body`. Returns the modified user |
 
@@ -25,23 +23,7 @@ server.use(express.json())
 //   bio: "Having fun", // String, required
 // }
 
-// | POST   | /api/users     | Creates a user using the information sent inside the `request body`. `insert` Takes a new user `{ name, bio }` and resolves to the the newly created user `{ id, name, bio }`.
-// When the client makes a `POST` request to `/api/users`:
-
-// - If the request body is missing the `name` or `bio` property:
-
-//   - respond with HTTP status code `400` (Bad Request).
-//   - return the following JSON response: `{ message: "Please provide name and bio for the user" }`.
-
-// - If the information about the _user_ is valid:
-
-//   - save the new _user_ the the database.
-//   - respond with HTTP status code `201` (Created).
-//   - return the newly created _user document_ including its id.
-
-// - If there's an error while saving the _user_:
-//   - respond with HTTP status code `500` (Server Error).
-//   - return the following JSON object: `{ message: "There was an error while saving the user to the database" }`.
+// | POST   | /api/users     
 
 server.post('/api/users',async (req,res) => {
   try {
@@ -61,7 +43,7 @@ server.post('/api/users',async (req,res) => {
 
 
 
-// | GET    | /api/users     | Returns an array users.   `find` Resolves to the list of users (or empty array).
+// | GET    | /api/users    
 
 server.get('/api/users', async (req,res) => {
   try {
@@ -86,6 +68,41 @@ server.get('/api/users', async (req,res) => {
 //     })
 // })
 
+
+// | GET    | /api/users/:id | Returns the user object with the specified `id`.   
+
+// server.get('/api/users/:id', async (req,res) => {
+//   try {
+//     const { id } = req.params
+//     const user = await User.findById(id)
+//     if (!user) {
+//       res.status(404).json({message: `The user with the specified ID does not exist`})
+//     } else {
+//       res.status(200).json(user)
+//     }
+//   } catch (error) {
+//     console.log(error.message)
+//     res.status(500).json({message: `The user information could not be retrieved`})
+//   }
+
+// })
+
+server.get('/api/users/:id', (req,res) => {
+  const { id } = req.params
+  User.findById(id)
+    .then(user => {
+      if (!user) {
+        res.status(404).json({message: `The user with the specified ID does not exist`})
+      } else {
+      res.json(user)
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'The users information could not be retrieved'
+      })
+    })
+})
 
 
 
