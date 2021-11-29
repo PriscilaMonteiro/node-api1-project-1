@@ -14,13 +14,8 @@ server.use(express.json())
 
 //FOURTH STEP: ENDPOINTS
                 
-// | PUT    | /api/users/:id | Updates the user with the specified `id` using data from the `request body`. Returns the modified user |
 
-// {
-//   id: "a_unique_id", // String, required
-//   name: "Jane Doe",  // String, required
-//   bio: "Having fun", // String, required
-// }
+
 
 // | POST   | /api/users     
 
@@ -121,6 +116,27 @@ server.delete('/api/users/:id', (req, res) => {
     })
 })
 
+// | PUT    | /api/users/:id | Updates the user with the specified `id` using data from the `request body`. Returns the modified user |
+
+server.put('/api/users/:id', async (req,res) => {
+  try {
+    const { id } = req.params
+    const { name, bio } = req.body
+    const possibleUser = await User.findById(req.params.id)
+    if (!possibleUser) {
+      res.status(404).json({message: 'The user with the specified ID does not exist'})
+    } else {
+      if (!name || !bio) {
+        res.status(400).json({message: 'Please provide name and bio for the user'})
+      } else {
+        const updatedUser = await User.update(id, { name, bio })
+        res.status(200).json(updatedUser)
+      }
+    }
+  } catch (error) {
+    res.status(500).json({message: `The users information could not be retrieved`})
+  }
+})
 
 
 // LAST STEP: EXPOSING THE SERVER TO OTHER MODULES
