@@ -1,6 +1,6 @@
 // FIRST STEP: IMPORTS
-
 const express = require('express')
+const cors = require('cors')
 const User = require('./users/model')
 
 //SECOND STEP: INSTANCE OF EXPRESS APP
@@ -9,6 +9,7 @@ const server = express()
 
 //THIRD STEP: GLOBAL MIDDLEWARE
 server.use(express.json())
+server.use(cors())
 
 
 

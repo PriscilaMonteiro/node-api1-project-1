@@ -138,6 +138,8 @@ You'll need to enable the `cors` middleware:
 - add the `cors` npm module: `npm i cors`.
 - add `server.use(cors())` after `server.use(express.json())`.
 
+CORS - Cross Origin Resource Sharing is a mechanism that allows a website url to request data from a different url
+
 Create a new React application and connect it to your server:
 
 - the React application can be anywhere, but, for this project create it inside the folder for the solution.
